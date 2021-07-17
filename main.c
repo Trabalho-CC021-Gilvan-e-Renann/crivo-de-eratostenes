@@ -146,7 +146,7 @@ int main(){
 
       #endif
       printf("~>Busca Concluida\n");
-      printf("~>%d Primos Encrontados", totalPrimos);
+      printf("~>%d Primos Encontrados", totalPrimos);
 
       #ifdef OUTPUT
         printf("\n");
