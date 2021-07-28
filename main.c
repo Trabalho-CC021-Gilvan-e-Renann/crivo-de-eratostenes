@@ -9,7 +9,7 @@
 //#define OUTPUT TRUE
 
 int main(){
-  int n = 10000000;
+  int n = 10*1000*1000;
   int *num = malloc((1+n)*sizeof(int));
 
   int totalPrimos = n+1-2;
@@ -20,7 +20,7 @@ int main(){
   printf("SERIAL\n");
   printf("~>Iniciando Variaveis...\n");
   for (i = 0; i <= n; i++) {
-    num[i]=i;
+    num[i] = i;
   }
 
   printf("~>Variaveis Iniciaizadas...\n");
@@ -31,19 +31,20 @@ int main(){
   #endif
   num[0]=-1;
   num[1]=-1;
-  for(int i = 2; i < n/2+1; i++){
-    for(int j=i; j <= n+1; j+=i){
-      if(i!=j && num[j]!=-1 && num[j]%i==0){
-        //printf("%d", i);
-        num[j] = -1;
-        totalPrimos--;
+  for(int i = 2; i < n; i++){
+    if(num[i]!=-1)
+      for(int j=i+i; j<=n; j+=i){
+        if(num[j]%i==0){
+          if(num[j] != -1){
+            totalPrimos--;
+          }
+          num[j] = -1;
+        }
       }
-
-    }
   }
   #ifdef OUTPUT
-    for(int i = 2; i < n/2+1; i++){
-      if(num[j]!=-1){
+    for(i = 2; i < n; i++){
+      if(num[i]!=-1){
         printf("%d ", i);
       }
     }
@@ -51,7 +52,7 @@ int main(){
   #ifdef STA_TIME
     end = omp_get_wtime();
     tiempo = end-inicio;
-    printf("~>Tempo Inicial: %f\n",inicio);
+    printf("\n~>Tempo Inicial: %f\n",inicio);
     printf("~>Tempo Final: %f\n",end);
     printf("~>Tempo: %f\n", tiempo);
   #endif

@@ -32,14 +32,18 @@ int main(){
   #endif
   num[0]=-1;
   num[1]=-1;
-  #pragma omp parallel num_threads(NUM_THEARDS)
+  #pragma omp parallel num_threads(2)
   {
   #pragma omp for
-    for(int i = 2; i < n/2+1; i++){
-      for(int j=i; j <= n+1; j+=i){
-        if(i!=j && num[j]!=-1 && num[j]%i==0){
-          num[j] = -1;
-          totalPrimos--;
+    for(int i = 2; i <= n/2 +1; i++){
+      if(num[i]!=-1){
+        for(int j=i+i; j<=n; j+=i){
+          if(num[j]%i==0){
+            if(num[j] != -1){
+              totalPrimos--;
+            }
+            num[j] = -1;
+          }
         }
       }
     }
@@ -63,4 +67,3 @@ int main(){
   printf("~>%d Primos Encrontados", totalPrimos);
   return 0;
 }
-
