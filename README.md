@@ -13,7 +13,7 @@ O crivo de eratóstenes é um método utilizado para se encontrar números primo
 
 ## Repositório do Github/BitBucket/GitLab a ser utilizado
 
-> Será utilizado o github para hospedar o código fonte e arquivos, o [link do repositório](https://github.com/TrabalhosCC-Gilvan-e-Renann/crivo-de-eratostenes)
+Será utilizado o github para hospedar o código fonte e arquivos, o [link do repositório](https://github.com/TrabalhosCC-Gilvan-e-Renann/crivo-de-eratostenes)
 
 ## Recursos Computacionais que serão utilizados
 
@@ -56,6 +56,6 @@ O crivo de eratóstenes é um método utilizado para se encontrar números primo
 
 ## Descrição de como será apresentado a análise de desempenho
 
->A análise de desempenho será realizada após a execução dos 3 algoritmos anteriores (Serial, Serial utilizando MPI Paralelo utilizando Threads, Paralelo utilizando MPI) na linguagem de programação C, teremos que cada algoritmo será executada no total de 5 vezes e após terminarmos a execução dos algoritmos, será realizado uma análise do tempo médio de cada um, o seu desvio padrão, o speedup para os algoritmos paralelas e sua eficiência.
+A análise de desempenho será realizada após a execução dos 3 algoritmos anteriores (Serial, Serial utilizando MPI Paralelo utilizando Threads, Paralelo utilizando MPI) na linguagem de programação C, teremos que cada algoritmo será executada no total de 5 vezes e após terminarmos a execução dos algoritmos, será realizado uma análise do tempo médio de cada um, o seu desvio padrão, o speedup para os algoritmos paralelas e sua eficiência.
 
->A análise de desempenho será realizada após a execução dos 3 algoritmos anteriores (Serial, Serial utilizando MPI Paralelo utilizando Threads, Paralelo utilizando MPI) na linguagem de programação C, teremos que cada algoritmo será executada no total de 5 vezes e após terminarmos a execução dos algoritmos, será realizado uma análise do tempo médio de cada um, o seu desvio padrão, o speedup para os algoritmos paralelas e sua eficiência.
+A análise de desempenho será realizada após a execução dos 3 algoritmos anteriores (Serial, Serial utilizando MPI Paralelo utilizando Threads, Paralelo utilizando MPI) na linguagem de programação C, teremos que cada algoritmo será executada no total de 5 vezes e após terminarmos a execução dos algoritmos, será realizado uma análise do tempo médio de cada um, o seu desvio padrão, o speedup para os algoritmos paralelas e sua eficiência.
