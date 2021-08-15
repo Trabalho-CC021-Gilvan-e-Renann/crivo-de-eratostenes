@@ -30,7 +30,7 @@ int main(){
   #endif
   num[0]=-1;
   num[1]=-1;
-  #pragma omp parallel num_threads(2)
+  #pragma omp parallel num_threads(NUM_THEARDS)
   {
   #pragma omp for
     for(int i = 2; i <= n/2 +1; i++){
