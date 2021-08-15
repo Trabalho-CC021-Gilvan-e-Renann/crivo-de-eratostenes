@@ -7,17 +7,15 @@
 #define NUM_THEARDS 4
 
 #define STA_TIME TRUE
-//#define OUTPUT TRUE
 
 int main(){
   int n = 10000000;
   int *num = malloc((1+n)*sizeof(int));
 
-  int totalPrimos = n+1-2;
   #ifdef STA_TIME
     double inicio, end, tiempo;
   #endif // STA_TIME
-  int i, j;
+  int i;
   printf("PARALELO Com T\n");
   printf("~>Iniciando Variaveis...\n");
   for (i = 0; i <= n; i++) {
@@ -39,22 +37,12 @@ int main(){
       if(num[i]!=-1){
         for(int j=i+i; j<=n; j+=i){
           if(num[j]%i==0){
-            if(num[j] != -1){
-              totalPrimos--;
-            }
             num[j] = -1;
           }
         }
       }
     }
   }
-  #ifdef OUTPUT
-    for(int i = 2; i < n/2+1; i++){
-      if(num[j]!=-1){
-        printf("%d ", i);
-      }
-    }
-  #endif // OUTPUT
   #ifdef STA_TIME
     end = omp_get_wtime();
     tiempo = end-inicio;
@@ -64,6 +52,5 @@ int main(){
   #endif
 
   printf("~>Busca Concluida\n");
-  printf("~>%d Primos Encrontados", totalPrimos);
   return 0;
 }
