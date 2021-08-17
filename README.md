@@ -1,6 +1,6 @@
 
 ## CRIVO DE ERATÓSTENES 
-_Projeto referente a cadeira CC0021 - Programação Concorrente_
+_Projeto referente a cadeira do curso de ciência da computação da UFCA (CC0021 - Programação Concorrente)_
 
 O crivo de eratóstenes é um método utilizado para se encontrar números primos entre 0 e um número qualquer (em todas as execuções realizadas o número que será adotado será o 10.000.000).
 
