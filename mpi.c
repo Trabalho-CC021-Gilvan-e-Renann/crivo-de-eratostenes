@@ -8,18 +8,18 @@
 #define STA_TIME TRUE
 //#define OUTPUT TRUE
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     MPI_Init(NULL, NULL);
     int nprocs;
     MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int n = 10000000;
-    int subTam = n/nprocs;
-    int *num = malloc((1 + n) * sizeof(int));
+    int n = 10;
+    int subTam = n / nprocs;
+    int *num = malloc((n) * sizeof(int));
     int *subvetor = NULL;
-    int totalPrimos = n - 1;
+    int totalPrimos = n - 2;
     double h;
 
     //MPI
@@ -27,11 +27,11 @@ int main(int argc, char** argv) {
     double inicio, end, tiempo;
 #endif // STA_TIME
     int i, j;
-    if (rank == 0){
-        printf("CRIVO COM MPI com %d Processo(s)\n",nprocs);
+    if (rank == 0) {
+        printf("CRIVO COM MPI com %d Processo(s)\n", nprocs);
         printf("~>Iniciando Variaveis...\n");
 
-        for (i = 0; i <= n; i++) num[i] = i;
+        for (i = 0; i < n; i++) num[i] = i;
 
         printf("~>Variaveis Iniciaizadas...\n");
         printf("~>Iniciando Buscas de Primos...\n");
@@ -42,42 +42,57 @@ int main(int argc, char** argv) {
 #endif
     num[0] = -1;
     num[1] = -1;
-    subvetor = malloc((subTam)*sizeof(int));
-    MPI_Scatter(num,subTam,MPI_INT,subvetor,subTam,MPI_INT,0,MPI_COMM_WORLD);
+    subvetor = malloc((subTam) * sizeof(int));
+    MPI_Scatter(num, subTam, MPI_INT, subvetor, subTam, MPI_INT, 0, MPI_COMM_WORLD);
     int primosIntervalo = 0;
+    int valJ = 0;
+    int valI = 0;
+/*for (i = 0; i < subTam; i++) printf("|%d -> %d(%d)|",rank,subvetor[i],i);
+MPI_Barrier(MPI_COMM_WORLD);
+MPI_Barrier(MPI_COMM_WORLD);*/
 
-    for (int i = 2; i <= /*n/2 + 1*/ subTam; i++) {
-        if (subvetor[i] != -1)
-            for (int j = i+i; j <= subTam; j += i) {
+//printf("\n RANK %d | %d | \n",rank ,subTam);
+    for (int i = 2; i < subTam; i++) {
+        // printf("(i %d) %d = %d \n", i,rank,subvetor[i]);
+        if (subvetor[i] != -1 || (rank != 0)) {
+            if (rank == 0) {
+                valJ = i + i;
+            } else { valJ = 0; }
+            for (int j = valJ; j < subTam; j += i) {
                 if (subvetor[j] % i == 0) {
                     if (subvetor[j] != -1) {
+                        // printf("\n RANK %d | %d |",rank ,subvetor[j]);
                         primosIntervalo++;
                     }
                     subvetor[j] = -1;
                 }
+                //printf("(i=%d)(j=%d)(Rank=%d) = %d \n", i,j,rank,subvetor[j]);
+                //                printf("|i=%d|j=%d,%d|rank=%d|\n",i,j,subvetor[j],rank);
             }
+        }
     }
+    for (i = 0; i < subTam; i++) printf("|rank(%d) -> %d(i = %d)|", rank, subvetor[i], i);
 
 #ifdef OUTPUT
     for(int i = 2; i < n/2+1; i++){
-      if(num[j]!=-1){
-        printf("%d ", i);
-      }
+        if(num[j]!=-1){
+            printf("%d ", i);
+        }
     }
 #endif // OUTPUT
 
     int *resultados = NULL;
-    if (rank==0) resultados = malloc(nprocs*sizeof(int));
-    MPI_Gather(&primosIntervalo,1,MPI_INT,resultados,1,MPI_INT,0,MPI_COMM_WORLD);
+    if (rank == 0) resultados = malloc(nprocs * sizeof(int));
+    MPI_Gather(&primosIntervalo, 1, MPI_INT, resultados, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-    if(rank==0){
+    if (rank == 0) {
         for (i = 0; i < nprocs; i++) totalPrimos -= resultados[i];
 
 #ifdef STA_TIME
         end = MPI_Wtime();
-        tiempo = end-inicio;
-        printf("\n~>Tempo Inicial: %f\n",inicio);
-        printf("~>Tempo Final: %f\n",end);
+        tiempo = end - inicio;
+        printf("\n~>Tempo Inicial: %f\n", inicio);
+        printf("~>Tempo Final: %f\n", end);
         printf("~>Tempo: %f\n", tiempo);
 #endif
         printf("~>Busca Concluida\n");
