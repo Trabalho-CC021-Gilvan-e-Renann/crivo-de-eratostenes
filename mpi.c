@@ -46,11 +46,10 @@ int main(int argc, char **argv) {
     MPI_Scatter(num, subTam, MPI_INT, subvetor, subTam, MPI_INT, 0, MPI_COMM_WORLD);
 
     int primosIntervalo = 0;
-    int acc = 0;
+    int acc =(subvetor[0] != -1 && rank != 0) ? subvetor[0] : 0;
     for (int i = 2; i < subTam; i++) {
-        if (subvetor[i] != -1 || rank!=0) {
-           for (j= rank == 0 ? i + i : 0; j < subTam; j += i) {
-              if(subvetor[0] != -1) acc = subvetor[0];
+        if (num[i+(rank*subTam)] != -1) {
+            for (j= rank == 0 ? i + i : 0; j < subTam; j += i) {
                 if (subvetor[j] % i == 0) {
                     if (subvetor[j] != -1) {
                         primosIntervalo++;
@@ -85,7 +84,7 @@ int main(int argc, char **argv) {
         printf("~>Tempo: %f\n", tiempo);
 #endif
         printf("~>Busca Concluida\n");
-        printf("~>%d Primos Encontrados", totalPrimos);
+        printf("~>%d Primos Encontrados\n", totalPrimos);
     }
 
     MPI_Barrier(MPI_COMM_WORLD);
