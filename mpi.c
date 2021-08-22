@@ -15,8 +15,8 @@ int main(int argc, char **argv) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int n = 10;
-    int subTam = n / nprocs;
+    int n = 10000000;
+    int subTam = (int) n / nprocs;
     int *num = malloc((n) * sizeof(int));
     int *subvetor = NULL;
     int totalPrimos = n - 2;
@@ -44,34 +44,23 @@ int main(int argc, char **argv) {
     num[1] = -1;
     subvetor = malloc((subTam) * sizeof(int));
     MPI_Scatter(num, subTam, MPI_INT, subvetor, subTam, MPI_INT, 0, MPI_COMM_WORLD);
-    int primosIntervalo = 0;
-    int valJ = 0;
-    int valI = 0;
-/*for (i = 0; i < subTam; i++) printf("|%d -> %d(%d)|",rank,subvetor[i],i);
-MPI_Barrier(MPI_COMM_WORLD);
-MPI_Barrier(MPI_COMM_WORLD);*/
 
-//printf("\n RANK %d | %d | \n",rank ,subTam);
+    int primosIntervalo = 0;
+    int acc = 0;
     for (int i = 2; i < subTam; i++) {
-        // printf("(i %d) %d = %d \n", i,rank,subvetor[i]);
-        if (subvetor[i] != -1 || (rank != 0)) {
-            if (rank == 0) {
-                valJ = i + i;
-            } else { valJ = 0; }
-            for (int j = valJ; j < subTam; j += i) {
+        if (subvetor[i] != -1 || rank!=0) {
+           for (j= rank == 0 ? i + i : 0; j < subTam; j += i) {
+              if(subvetor[0] != -1) acc = subvetor[0];
                 if (subvetor[j] % i == 0) {
                     if (subvetor[j] != -1) {
-                        // printf("\n RANK %d | %d |",rank ,subvetor[j]);
                         primosIntervalo++;
                     }
                     subvetor[j] = -1;
                 }
-                //printf("(i=%d)(j=%d)(Rank=%d) = %d \n", i,j,rank,subvetor[j]);
-                //                printf("|i=%d|j=%d,%d|rank=%d|\n",i,j,subvetor[j],rank);
+                if(j == 0 && acc%i != 0) j -= (int)(acc%i);
             }
         }
     }
-    for (i = 0; i < subTam; i++) printf("|rank(%d) -> %d(i = %d)|", rank, subvetor[i], i);
 
 #ifdef OUTPUT
     for(int i = 2; i < n/2+1; i++){
